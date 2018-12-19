@@ -5,6 +5,14 @@ import json
 from . forms import UserRequest
 from . models import *
 
+
+def speechtotext(request):
+    if(request.method == 'POST'):
+        if 'textMessage' in request.POST:
+            textMessage = request.POST['textMessage']
+
+    return render(request, template_name='index.html')
+
 def ResponsePage(request):
     user_request=UserRequest(request.POST or None)
     server_response='Welcome to JioKisan'
