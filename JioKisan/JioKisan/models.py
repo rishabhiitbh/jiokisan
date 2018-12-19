@@ -36,7 +36,25 @@ def GiveResponse(msg,number):
         p1.save()
     curstate=p1.chat_state
     msg=msg.lower()
-    word=msg.split(' ')
+    word=[]
+    words=msg.split(' ')
+    ##check if number
+    try:
+        selr_num=int(words[0])
+        word.append(words[0])
+    except ValueError:
+        if 'sell' in words:
+            word.append('sell')
+        elif 'buy' in words:
+            word.append('buy')
+        else :
+            word.append('boo')
+        flag=False
+        for cat in Categary.objects.all():
+            if cat.name in words:
+                word.append(cat.name)
+                break
+
     reply=''
     if curstate == '0':
         if word[0] == 'sell':
@@ -46,9 +64,9 @@ def GiveResponse(msg,number):
                 i=1
                 for sellable in Sellable.objects.filter(categary=categ):
                     suppliers.append(sellable)
-                    reply=reply+i.__str__()+". Sell at "+sellable.cost.__str__()+' to '+sellable.seller.name+'<br>'
+                    reply=reply+i.__str__()+". Sell at "+sellable.cost.__str__()+' to '+sellable.seller.name+','
                     i=i+1
-                reply=reply+'\nEnter your choice'    
+                reply=reply+'Enter your choice'    
                 p1.chat_state='1'
                 p1.save()
             else :
@@ -68,7 +86,7 @@ def GiveResponse(msg,number):
         try:
             selr_num=int(word[0])
         except ValueError:
-            reply = "Invalid  number \n What would you like to buy/sell"
+            reply = "Invalid  number What would you like to buy/sell"
             p1.chat_state = '0'
             p1.save()            
             return reply
@@ -76,14 +94,14 @@ def GiveResponse(msg,number):
             reply = 'no such buyer exists '+selr_num.__str__()+" "+len(suppliers).__str__()
         else :
             selr=suppliers[selr_num -1]
-            reply = 'You can contact buyer '+selr.seller.name +' using phone number '+selr.seller.phone_number.__str__()
+            reply = 'You can contact buyer '+selr.seller.name +' using phone number |'+selr.seller.phone_number.__str__()+'|'
             p1.chat_state = '0'
             p1.save()
     elif curstate == '2':
         try:
             price=int(word[0])
         except ValueError:
-            reply = "Invalid  number \n What would you like to buy/sell"
+            reply = "Invalid  number What would you like to buy/sell"
             p1.chat_state = '0'
             p1.save()            
             return reply

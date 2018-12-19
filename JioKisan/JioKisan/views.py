@@ -1,10 +1,11 @@
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import json
 
 from . forms import UserRequest
 from . models import *
-
+@csrf_exempt
 def ResponsePage(request):
     user_request=UserRequest(request.POST or None)
     server_response='Welcome to JioKisan'
@@ -13,9 +14,14 @@ def ResponsePage(request):
         msg=user_request.cleaned_data.get('msg')
         if msg != '':
             server_response=GiveResponse(msg,number)
-        # some_data_to_dump = {'some_var_1': msg
-        # }
-        # data = json.dumps(some_data_to_dump)
+        some_data_to_dump = {'some_var_1': server_response
+        }
+        data = json.dumps(some_data_to_dump)
+        print (data)
+       # server_response='one,two,three'
+        response=HttpResponse(server_response,content_type='text/plaintext')
+        response.__setitem__(header="Access-Control-Allow-Origin",value='*')
+        return response
         # return HttpResponse(data, content_type='application/json')
         # some_data_to_dump = {'some_var_1': msg
         # }
