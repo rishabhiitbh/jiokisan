@@ -46,7 +46,7 @@ def GiveResponse(msg,number):
                 i=1
                 for sellable in Sellable.objects.filter(categary=categ):
                     suppliers.append(sellable)
-                    reply=reply+i.__str__()". Sell at "+sellable.cost.__str__()+' from '+sellable.seller.__str__()+'<br>'
+                    reply=reply+i.__str__()+". Sell at "+sellable.cost.__str__()+' from '+sellable.seller.__str__()+'<br>'
                 reply=reply+'\nEnter your choice'    
                 p1.chat_state='1'
                 p1.save()
