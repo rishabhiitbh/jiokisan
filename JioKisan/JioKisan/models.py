@@ -46,7 +46,8 @@ def GiveResponse(msg,number):
                 i=1
                 for sellable in Sellable.objects.filter(categary=categ):
                     suppliers.append(sellable)
-                    reply=reply+i.__str__()+". Sell at "+sellable.cost.__str__()+' from '+sellable.seller.__str__()+'<br>'
+                    reply=reply+i.__str__()+". Sell at "+sellable.cost.__str__()+' to '+sellable.seller.name+'<br>'
+                    i=i+1
                 reply=reply+'\nEnter your choice'    
                 p1.chat_state='1'
                 p1.save()
@@ -65,17 +66,17 @@ def GiveResponse(msg,number):
             return 'sorry i could not unserstand you'
     elif curstate == '1':
         try:
-            buyer_num=int(word[0])
+            selr_num=int(word[0])
         except ValueError:
             reply = "Invalid  number \n What would you like to buy/sell"
             p1.chat_state = '0'
             p1.save()            
             return reply
-        if buyer_num > suppliers.count():
-            reply = 'no such buyer exists'
+        if selr_num > len(suppliers):
+            reply = 'no such buyer exists '+selr_num.__str__()+" "+len(suppliers).__str__()
         else :
-            buyer=suppliers[buyer_num -1]
-            reply = 'You can contact buyer '+buyer.name +' using phone number '+buyer.phone_number.__str()
+            selr=suppliers[selr_num -1]
+            reply = 'You can contact buyer '+selr.seller.name +' using phone number '+selr.seller.phone_number.__str__()
             p1.chat_state = '0'
             p1.save()
     elif curstate == '2':
