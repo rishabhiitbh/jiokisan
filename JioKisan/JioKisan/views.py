@@ -8,8 +8,10 @@ from . models import *
 
 def speechtotext(request):
     if(request.method == 'POST'):
-        if 'textMessage' in request.POST:
-            textMessage = request.POST['textMessage']
+        if 'finalTranscripts' in request.POST:
+            textMessage = request.POST['finalTranscripts']
+            print(textMessage)
+
 
     return render(request, template_name='index.html')
 

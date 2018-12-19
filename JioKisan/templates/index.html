@@ -23,7 +23,14 @@
   <button id="softkey-centre">CLick to Record</button>
   <button id="softkey-right"> Send String</button>
 
-  <button id=softkey-left></button>
+
+  
+<!-- <form action="/" method="POST">
+  <input  id="alpha" type="text" name="lastname" value="Mouse">
+  <br><br>
+  <input type="submit" value="Submit">
+</form>  -->
+
 
   <script>
 
@@ -63,21 +70,27 @@
 
         console.log('Speech has stopped being detected');
 
-         {
-           {
-            $.post("192.168.43.194:8000", finalTranscripts), function (data, status, xhr) {
-              alert(data);
-            };
-          };
-        };
-
       }
 
+      $(document).ready(function () {
+        $("#softkey-right").click(function () {
+          // recognition.s
+          console.log(finalTranscripts);
+          $.post("http://192.168.43.194:8000/",
+            "msg="+finalTranscripts,
+            function (data, status, xhr) {
+              alert("Data: " + finalTranscripts + "\nStatus: " + status);
+            });
+        });
+      });
+
       recognition.onerror = function (event) {
-        document.getElementById("demo").innerHTML = 'Sorry omething Went Wrong';
+        document.getElementById("demo").innerHTML = 'Sorry Something Went Wrong';
       }
 
     });
+
+
 
 
 
